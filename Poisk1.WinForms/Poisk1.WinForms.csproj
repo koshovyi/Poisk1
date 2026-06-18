@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Poisk1.Core\Poisk1.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>poisk1.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <!-- Make a published build self-contained: copy the repo's Data folder next to the .exe,
+       so AppContext.BaseDirectory\Data is found directly (no walk-up needed). During plain
+       `dotnet run` from the source tree the walk-up in Roms.FindDataDir already finds it. -->
+  <Target Name="CopyDataOnPublish" AfterTargets="Publish">
+    <ItemGroup>
+      <DataFiles Include="$(MSBuildProjectDirectory)\..\Data\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(DataFiles)"
+          DestinationFiles="@(DataFiles-&gt;'$(PublishDir)Data\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

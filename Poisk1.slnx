@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Poisk1.Core/Poisk1.Core.csproj" />
+  <Project Path="Poisk1.WinForms/Poisk1.WinForms.csproj" />
+</Solution>

@@ -1,0 +1,27 @@
+{
+  "RamSizeKb": 128,
+  "Font": "poisk_cga.dat",
+  "DefaultBios": "poisk1_1991.bin",
+  "Bioses": [
+    {
+      "Name": "Поиск-1 1989",
+      "File": "poisk1_1989.bin"
+    },
+    {
+      "Name": "Поиск-1 1991",
+      "File": "poisk1_1991.bin"
+    }
+  ],
+  "Slots": [
+    "fdd:FDD ADD BIOS v5.00 1992 (turbo).bin",
+    "ram256",
+    "ram256",
+    "hdd"
+  ],
+  "HddSizeMb": 20,
+  "HddImage": "dos_nc.img",
+  "GlyphRemap": {
+    "0xF6": "0x10",
+    "0xF7": "0x11"
+  }
+}
