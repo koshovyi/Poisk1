@@ -66,8 +66,9 @@ readable reimplementation written from scratch in C#, useful for:
 
 - **Windows** (the UI is WinForms).
 - **.NET 10 SDK** (the projects target `net10.0` / `net10.0-windows`).
-- **Poisk-1 firmware files** — see [Firmware & data files](#firmware--data-files) below. ROM
-  dumps are **not** committed to the repository; you supply them in the `Data` folder.
+- **Poisk-1 firmware files** — **already included** in the `Data` folder (BIOS, font, ROMs,
+  disk and cassette images), so the emulator runs out of the box. See
+  [Firmware & data files](#firmware--data-files) below.
 
 ---
 
@@ -116,7 +117,8 @@ The menu bar drives everything:
 ## Firmware & data files
 
 Everything the emulator reads lives in the `Data/` folder (resolved by walking up from the
-executable). ROM/disk dumps are intentionally **not** committed.
+executable). All firmware and data files are **included** — nothing to download or supply
+yourself; just build and run.
 
 ```
 Data/
@@ -202,5 +204,5 @@ others and register it in `Poisk1.WinForms/Lang.cs`.
 
 ## Notes
 
-- Firmware ROMs and disk images are copyrighted/proprietary and are **not** distributed with this code. Supply your own dumps in `Data/`.
-- The emulator is for preservation, research, and education.
+- The firmware, ROMs and disk images are **bundled and ready to use** — the emulator works out of the box.
+- This is decades-old Soviet-era software. The country (the USSR) and the manufacturer that produced it no longer exist, and there is no remaining rights holder. It is preserved and shared here as abandonware, purely for preservation, research, and education.
