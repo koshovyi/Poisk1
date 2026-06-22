@@ -13,10 +13,10 @@
     }
   ],
   "Slots": [
-    "fdd:FDD ADD BIOS v5.00 1992 (turbo).bin",
-    "ram256",
-    "ram256",
-    "hdd"
+    "",
+    "",
+    "",
+    ""
   ],
   "HddSizeMb": 20,
   "HddImage": "dos_nc.img",
