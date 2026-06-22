@@ -1,4 +1,4 @@
-# Poisk-1 Emulator
+# Poisk-1 Emulator (Windows)
 
 ## A personal note
 
@@ -11,6 +11,8 @@ This emulator is my attempt to help preserve that history.
 Unfortunately, many Poisk-1 computers were dismantled in the late 1990s and early 2000s for precious metals recovery. As a result, original hardware, spare parts, and documentation have become increasingly rare. Over the years I have collected several Poisk-1 machines and a large number of components, creating what my friends jokingly call a small "nature reserve" dedicated to these computers.
 
 My connection to the Poisk-1 is deeply personal. I still remember going to the local computer market with my father and dreaming about buying a mouse adapter and a mouse itself. At the time, they were incredibly expensive, and I never managed to get one. I remember traveling across the entire city to find new 5.25-inch floppy disks filled with games and software. I remember using the BASIC editor as a notebook, storing my texts on cassette tapes, and spending countless hours exploring what this machine could do.
+
+![Poisk-1 emulator](Data/form1.png)
 
 For many people, the Poisk-1 is just another Soviet IBM PC compatible. For me, it was the beginning of a lifelong journey into computers, programming, and technology.
 
@@ -53,6 +55,7 @@ readable reimplementation written from scratch in C#, useful for:
   - **B003** ROM adapter — option-ROM cartridges (BASIC, games) mapped from `0xC0000`.
   - **B107 / B109** RAM expansion boards (256 KB / 512 KB), stackable.
   - **B504** floppy controller (FD1793 / КР1818ВГ93) — up to two 360/720 KB drives, boots MS-DOS.
+  - **B942** hard-disk controller (WD2010) — a fixed disk from an HDD image; install MS-DOS to it with `SYS C:`.
 - **Speaker audio** (square-wave), toggleable.
 - **Adjustable CPU speed** (1 MHz … 100 MHz) — handy for fast-forwarding cassette loads.
 - **Bilingual UI** (English / Ukrainian), with all strings externalized to JSON.
