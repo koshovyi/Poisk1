@@ -71,7 +71,7 @@ public sealed class MemoryBus : IMemoryBus
     {
         if (data.Length != BiosSize)
             throw new ArgumentException(
-                $"BIOS має бути рівно {BiosSize} байт (8 КБ), отримано {data.Length}.");
+                $"BIOS must be exactly {BiosSize} bytes (8 KB), got {data.Length}.");
         Array.Copy(data, _bios, BiosSize);
     }
 

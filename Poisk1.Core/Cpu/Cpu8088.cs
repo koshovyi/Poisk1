@@ -69,7 +69,7 @@ public sealed class Cpu8088 : ICpu
         s.IP = 0xFFF0;
         s.Flags = 0x0002; // bit 1 is always 1
         Halted = false;
-        _trace?.Invoke($"RESET -> {s.CS:X4}:{s.IP:X4} (фіз. 0x{s.LinearIp:X5})");
+        _trace?.Invoke($"RESET -> {s.CS:X4}:{s.IP:X4} (phys. 0x{s.LinearIp:X5})");
     }
 
     // ====================== Memory access ======================
@@ -378,7 +378,7 @@ public sealed class Cpu8088 : ICpu
             if (!_trapped && hit)
             {
                 _trapped = true;
-                _trace?.Invoke($"TRAP @ {s.CS:X4}:{s.IP:X4} AX={s.AX:X4} BX={s.BX:X4} CX={s.CX:X4} DX={s.DX:X4} SP={s.SP:X4} SS={s.SS:X4} DS={s.DS:X4}; історія:");
+                _trace?.Invoke($"TRAP @ {s.CS:X4}:{s.IP:X4} AX={s.AX:X4} BX={s.BX:X4} CX={s.CX:X4} DX={s.DX:X4} SP={s.SP:X4} SS={s.SS:X4} DS={s.DS:X4}; history:");
                 for (int k = 0; k < _hist.Length; k++)
                 {
                     uint a = _hist[(_histPos + k) % _hist.Length];
@@ -650,7 +650,7 @@ public sealed class Cpu8088 : ICpu
                 // (otherwise a game crash would "hang" the whole CPU). Log only the first few.
                 if (_unknownOpLog < 16)
                 {
-                    _trace?.Invoke($"невідомий опкод 0x{op:X2} @ {s.CS:X4}:{(ushort)(s.IP - 1):X4} — пропущено (NOP)");
+                    _trace?.Invoke($"unknown opcode 0x{op:X2} @ {s.CS:X4}:{(ushort)(s.IP - 1):X4} — skipped (NOP)");
                     _unknownOpLog++;
                 }
                 break;

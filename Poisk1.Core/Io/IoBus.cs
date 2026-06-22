@@ -46,7 +46,7 @@ public sealed class IoBus
         PendingStall = false;
         if (_handlers.TryGetValue(port, out var dev))
             return dev.ReadByte(port);
-        LogUnknown($"IO RD  невідомий порт 0x{port:X4} -> 0xFF", port);
+        LogUnknown($"IO RD  unknown port 0x{port:X4} -> 0xFF", port);
         return 0xFF;
     }
 
@@ -57,7 +57,7 @@ public sealed class IoBus
             dev.WriteByte(port, value);
             return;
         }
-        LogUnknown($"IO WR  невідомий порт 0x{port:X4} <- 0x{value:X2}", port);
+        LogUnknown($"IO WR  unknown port 0x{port:X4} <- 0x{value:X2}", port);
     }
 
     public ushort ReadWord(ushort port)

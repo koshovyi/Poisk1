@@ -48,7 +48,7 @@ public static class WavCassette
         var block = new byte[256];
         for (int k = 0; k < 256; k++) block[k] = ReadByte();
         ReadByte(); ReadByte(); // header CRC
-        if (block[0] != 0xA5) throw new InvalidDataException($"Невірний Magic: 0x{block[0]:X2} (декод .wav не вдався).");
+        if (block[0] != 0xA5) throw new InvalidDataException($"Invalid magic: 0x{block[0]:X2} (.wav decode failed).");
 
         byte fileType = block[9];
         int flen = block[10] | (block[11] << 8);
@@ -77,7 +77,7 @@ public static class WavCassette
     {
         var (samples, rate) = ReadWavMono8(path);
         var bits = DecodeBits(samples, rate);
-        log($"семплів={samples.Length} rate={rate} бітів={bits.Count}");
+        log($"samples={samples.Length} rate={rate} bits={bits.Count}");
         int i = 0, blockNo = 0;
         while (i < bits.Count && blockNo < 6)
         {
@@ -92,7 +92,7 @@ public static class WavCassette
                 int v = 0; for (int k = 0; k < 8; k++) v = (v << 1) | (bits[i++] ? 1 : 0);
                 bytes.Add((byte)v);
             }
-            log($"[лідер={leader} «1»] байти: {string.Join(" ", bytes.ConvertAll(b => b.ToString("X2")))}");
+            log($"[leader={leader} \"1\"] bytes: {string.Join(" ", bytes.ConvertAll(b => b.ToString("X2")))}");
             // skip to the next leader: find a long run of "1"
             int run = 0, start = i;
             while (i < bits.Count)
@@ -109,7 +109,7 @@ public static class WavCassette
     private static (byte[] samples, int rate) ReadWavMono8(string path)
     {
         var b = File.ReadAllBytes(path);
-        if (b.Length < 44 || b[0] != (byte)'R' || b[1] != (byte)'I') throw new InvalidDataException("Не RIFF/WAV.");
+        if (b.Length < 44 || b[0] != (byte)'R' || b[1] != (byte)'I') throw new InvalidDataException("Not RIFF/WAV.");
         int channels = b[22] | (b[23] << 8);
         int rate = b[24] | (b[25] << 8) | (b[26] << 16) | (b[27] << 24);
         int bps = b[34] | (b[35] << 8); // bits per sample
@@ -124,7 +124,7 @@ public static class WavCassette
             if (id == 0x61746164) { dataOff = pos + 8; dataLen = len; break; } // "data"
             pos += 8 + len + (len & 1);
         }
-        if (dataOff < 0) throw new InvalidDataException("Не знайдено chunk 'data'.");
+        if (dataOff < 0) throw new InvalidDataException("'data' chunk not found.");
         dataLen = Math.Min(dataLen, b.Length - dataOff);
 
         int bytesPerSample = (bps / 8) * channels;

@@ -198,7 +198,7 @@ public sealed partial class MainForm : Form
         var insertItem = new ToolStripMenuItem(L.InsertCassette);
         insertItem.Click += (_, _) => InsertCassette();
         var ejectItem = new ToolStripMenuItem(L.Eject);
-        ejectItem.Click += (_, _) => { _machine?.Cassette.Eject(); AppendLog(L.Cur == Language.En ? "Cassette ejected." : "Кассету вийнято."); };
+        ejectItem.Click += (_, _) => { _machine?.Cassette.Eject(); AppendLog("Cassette ejected."); };
         tapeMenu.DropDownItems.Add(insertItem);
         tapeMenu.DropDownItems.Add(ejectItem);
 
@@ -231,9 +231,7 @@ public sealed partial class MainForm : Form
             en.Click += (_, _) =>
             {
                 _fddPresent[d] = en.Checked; ApplyFddPresence();
-                AppendLog(L.Cur == Language.En
-                    ? $"Drive {ch} {(en.Checked ? "connected" : "disabled")}. Reset (Ctrl+R)."
-                    : $"Привід {ch} {(en.Checked ? "підключено" : "вимкнено")}. Скинь (Ctrl+R).");
+                AppendLog($"Drive {ch} {(en.Checked ? "connected" : "disabled")}. Reset (Ctrl+R).");
             };
             fddMenu.DropDownItems.Add(en);
 
@@ -308,7 +306,7 @@ public sealed partial class MainForm : Form
     {
         if (FindFdd() is null)
         {
-            AppendLog("Спершу встанови контролер B504 (НГМД) у слот (меню «Слоти»).");
+            AppendLog("Install the B504 (FDD) controller in a slot first (Slots menu).");
             return;
         }
         using var dlg = new OpenFileDialog
@@ -333,11 +331,11 @@ public sealed partial class MainForm : Form
             var disk = new Poisk1.Core.Devices.FloppyDisk(data, Path.GetFileName(_fddPath[d]!));
             fdd.Insert(d, disk);
             _fddItems[d].Text = L.DriveSlot((char)('A' + d), $"{disk.Name} ({disk.Cylinders}×{disk.Heads}×{disk.Sectors})") + "…";
-            AppendLog($"Привід {(char)('A' + d)}: {disk.Name} ({data.Length / 1024} КБ). Скинь машину (Ctrl+R) для завантаження з дискети.");
+            AppendLog($"Drive {(char)('A' + d)}: {disk.Name} ({data.Length / 1024} KB). Reset (Ctrl+R) to boot from the diskette.");
             if (_machine?.Slots.OfType<Poisk1.Core.Expansion.RamCard>().Any() != true)
-                AppendLog("⚠ Для MS-DOS додай розширення ОЗП у слот (B107/B109) — інакше «internal stack overflow».");
+                AppendLog("⚠ For MS-DOS, add a RAM expansion in a slot (B107/B109) — otherwise \"internal stack overflow\".");
         }
-        catch (Exception ex) { AppendLog($"Помилка образу: {ex.Message}"); }
+        catch (Exception ex) { AppendLog($"Image error: {ex.Message}"); }
     }
 
     private void EjectFloppy(int d)
@@ -345,7 +343,7 @@ public sealed partial class MainForm : Form
         _fddPath[d] = null;
         FindFdd()?.Insert(d, null);
         _fddItems[d].Text = L.DriveEmpty((char)('A' + d));
-        AppendLog($"Привід {(char)('A' + d)} спорожнено.");
+        AppendLog($"Drive {(char)('A' + d)} ejected.");
     }
 
     /// <summary>Apply drive connectivity to the controller (1 or 2 drives).</summary>
@@ -376,15 +374,15 @@ public sealed partial class MainForm : Form
             long size = (long)cyl * heads * spt * Poisk1.Core.Devices.HardDisk.SectorSize;
             byte[] data;
             if (File.Exists(path)) data = File.ReadAllBytes(path);
-            else { data = new byte[size]; File.WriteAllBytes(path, data); AppendLog($"HDD: створено порожній образ {file} ({size / 1024 / 1024} МБ)."); }
+            else { data = new byte[size]; File.WriteAllBytes(path, data); AppendLog($"HDD: created empty image {file} ({size / 1024 / 1024} MB)."); }
             var disk = new Poisk1.Core.Devices.HardDisk(data, cyl, heads, spt, file, path);
             hdd.Attach(0, disk);
             if (_hddItem is not null) _hddItem.Text = L.HddImageSlot(file, (int)(disk.SizeBytes / 1024 / 1024));
-            AppendLog($"HDD: {file} {cyl}×{heads}×{spt} = {disk.SizeBytes / 1024 / 1024} МБ. Скинь (Ctrl+R).");
+            AppendLog($"HDD: {file} {cyl}×{heads}×{spt} = {disk.SizeBytes / 1024 / 1024} MB. Reset (Ctrl+R).");
             if (_machine?.Slots.OfType<Poisk1.Core.Expansion.RamCard>().Any() != true)
-                AppendLog("⚠ Для MS-DOS додай розширення ОЗП у слот (B107/B109).");
+                AppendLog("⚠ For MS-DOS, add a RAM expansion in a slot (B107/B109).");
         }
-        catch (Exception ex) { AppendLog($"Помилка образу HDD: {ex.Message}"); }
+        catch (Exception ex) { AppendLog($"HDD image error: {ex.Message}"); }
     }
 
     /// <summary>Choose a different HDD image file from Data/hdd_disk (then Reset to use it).</summary>
@@ -392,7 +390,7 @@ public sealed partial class MainForm : Form
     {
         if (FindHdd() is null)
         {
-            AppendLog("Спершу встанови контролер B942 (НЖМД) у слот (меню «Слоти»).");
+            AppendLog("Install the B942 (HDD) controller in a slot first (Slots menu).");
             return;
         }
         Directory.CreateDirectory(HddDir());
@@ -436,7 +434,7 @@ public sealed partial class MainForm : Form
             string biosPath = Path.Combine(_dataDir, biosFile);
             if (!File.Exists(biosPath))
             {
-                AppendLog($"BIOS не знайдено: {biosPath}");
+                AppendLog($"BIOS not found: {biosPath}");
                 _machine = null;
                 return;
             }
@@ -444,7 +442,7 @@ public sealed partial class MainForm : Form
             string fontPath = Path.Combine(_dataDir, _config.Font);
             string? font = File.Exists(fontPath) ? fontPath : null;
             if (font is null)
-                AppendLog($"УВАГА: шрифт {_config.Font} не знайдено — символи не малюватимуться.");
+                AppendLog($"WARNING: font {_config.Font} not found — characters will not be drawn.");
 
             _machine = new Machine(
                 new MachineConfig
@@ -463,7 +461,7 @@ public sealed partial class MainForm : Form
                 if (card is not null)
                 {
                     _machine.InstallCard(slot, card);
-                    AppendLog($"Слот {slot + 1}: {card.DisplayName}");
+                    AppendLog($"Slot {slot + 1}: {card.DisplayName}");
                 }
             }
 
@@ -481,7 +479,7 @@ public sealed partial class MainForm : Form
 
             _currentBios = biosFile;
             Text = L.Title(biosFile);
-            AppendLog($"Запущено: {biosFile} (RAM {_config.RamSizeKb} КБ)");
+            AppendLog($"Started: {biosFile} (RAM {_config.RamSizeKb} KB)");
 
             string biosName = _config.Bioses.FirstOrDefault(b => b.File == biosFile)?.Name ?? biosFile;
             _stMachine.Text = L.MachineLabel + biosName;
@@ -493,7 +491,7 @@ public sealed partial class MainForm : Form
         }
         catch (Exception ex)
         {
-            AppendLog($"ПОМИЛКА: {ex.Message}");
+            AppendLog($"ERROR: {ex.Message}");
             _machine = null;
         }
         finally
@@ -507,7 +505,7 @@ public sealed partial class MainForm : Form
     {
         if (_currentBios is null)
         {
-            AppendLog("Нема активного BIOS для скидання.");
+            AppendLog("No active BIOS to reset.");
             return;
         }
         AppendLog("--- Reset ---");
@@ -534,7 +532,7 @@ public sealed partial class MainForm : Form
     {
         _config.Slots[slot] = id;
         ConfigStore.Save(_dataDir, _config);
-        AppendLog($"Слот {slot + 1} -> {CardCatalog.DisplayName(id)} (перезапуск)");
+        AppendLog($"Slot {slot + 1} -> {CardCatalog.DisplayName(id)} (restart)");
         if (_currentBios is not null) StartMachine(_currentBios);
     }
 
@@ -560,20 +558,20 @@ public sealed partial class MainForm : Form
                 string tapeName = name;
                 try { tapeName = WavCassette.Decode(dlg.FileName).Name; } catch { /* keep the file name */ }
                 _machine.Cassette.InsertWav(samples, rate, tapeName);
-                AppendLog($"Стрічку вставлено: {Path.GetFileName(dlg.FileName)} ({samples.Length} семплів @ {rate} Гц).");
-                AppendLog($"▶ Натисніть F1, введіть ІМ'Я «{tapeName.ToUpperInvariant()}», Enter, потім ще Enter (Вкл. магнитофон).");
-                AppendLog("  Якщо після запуску екран «кашею» — Видео → Графіка (авто).");
+                AppendLog($"Tape inserted: {Path.GetFileName(dlg.FileName)} ({samples.Length} samples @ {rate} Hz).");
+                AppendLog($"▶ Press F1, type the NAME \"{tapeName.ToUpperInvariant()}\", Enter, then Enter again (start the tape motor).");
+                AppendLog("  If the screen is garbled after start — Video → Graphics (auto).");
             }
             else
             {
                 _machine.Cassette.Insert(File.ReadAllBytes(dlg.FileName), name);
-                AppendLog($"Стрічку (.cas) вставлено: {Path.GetFileName(dlg.FileName)}.");
-                AppendLog($"▶ Натисніть F1, введіть ІМ'Я «{name.ToUpperInvariant()}», Enter, потім ще Enter.");
+                AppendLog($"Tape (.cas) inserted: {Path.GetFileName(dlg.FileName)}.");
+                AppendLog($"▶ Press F1, type the NAME \"{name.ToUpperInvariant()}\", Enter, then Enter again.");
             }
         }
         catch (Exception ex)
         {
-            AppendLog($"Помилка кассети: {ex.Message}");
+            AppendLog($"Cassette error: {ex.Message}");
         }
     }
 
@@ -623,7 +621,7 @@ public sealed partial class MainForm : Form
             {
                 _pendingTapeVideo = false;
                 SetVideo(CgaAdapter.ModeOverride.GfxAuto);
-                AppendLog("Гра запущена. (Якщо текстова — Видео → Авто/Текст.)");
+                AppendLog("Game started. (If it's text — Video → Auto/Text.)");
             }
 
             int n = _machine.DrainAudio(_audioBuf); // speaker sound → driver

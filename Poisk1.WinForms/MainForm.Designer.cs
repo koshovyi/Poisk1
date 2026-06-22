@@ -34,6 +34,7 @@ partial class MainForm
         _stState = new ToolStripStatusLabel();
         _screenPanel.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)_screen).BeginInit();
+        _status.SuspendLayout();
         SuspendLayout();
         // 
         // _menu
@@ -41,7 +42,7 @@ partial class MainForm
         _menu.ImageScalingSize = new Size(24, 24);
         _menu.Location = new Point(0, 0);
         _menu.Name = "_menu";
-        _menu.Size = new Size(640, 24);
+        _menu.Size = new Size(1000, 24);
         _menu.TabIndex = 2;
         _menu.Text = "menu";
         // 
@@ -53,7 +54,7 @@ partial class MainForm
         _screenPanel.Location = new Point(0, 24);
         _screenPanel.Name = "_screenPanel";
         _screenPanel.Padding = new Padding(10, 20, 10, 10);
-        _screenPanel.Size = new Size(640, 400);
+        _screenPanel.Size = new Size(1000, 770);
         _screenPanel.TabIndex = 0;
         // 
         // _screen
@@ -62,7 +63,7 @@ partial class MainForm
         _screen.Dock = DockStyle.Fill;
         _screen.Location = new Point(10, 20);
         _screen.Name = "_screen";
-        _screen.Size = new Size(620, 370);
+        _screen.Size = new Size(980, 740);
         _screen.SizeMode = PictureBoxSizeMode.Zoom;
         _screen.TabIndex = 0;
         _screen.TabStop = false;
@@ -73,40 +74,89 @@ partial class MainForm
         _log.Dock = DockStyle.Bottom;
         _log.Font = new Font("Courier New", 8.5F);
         _log.ForeColor = Color.LightGreen;
-        _log.Location = new Point(0, 424);
+        _log.Location = new Point(0, 794);
         _log.Multiline = true;
         _log.Name = "_log";
         _log.ReadOnly = true;
         _log.ScrollBars = ScrollBars.Vertical;
-        _log.Size = new Size(640, 160);
+        _log.Size = new Size(1000, 160);
         _log.TabIndex = 1;
         _log.TabStop = false;
-        //
+        // 
         // _status
-        //
+        // 
         _status.BackColor = Color.FromArgb(30, 30, 30);
+        _status.ForeColor = Color.Gainsboro;
+        _status.ImageScalingSize = new Size(24, 24);
         _status.Items.AddRange(new ToolStripItem[] { _stMachine, _stRam, _stVideo, _stCassette, _stCpu, _stSpring, _stFreq, _stState });
-        _status.Location = new Point(0, 562);
+        _status.Location = new Point(0, 954);
         _status.Name = "_status";
-        _status.Size = new Size(640, 22);
+        _status.Size = new Size(1000, 36);
         _status.SizingGrip = false;
         _status.TabIndex = 3;
-        _status.ForeColor = Color.Gainsboro;
-        _stMachine.Name = "_stMachine"; _stMachine.BorderSides = ToolStripStatusLabelBorderSides.Right; _stMachine.Text = "—";
-        _stRam.Name = "_stRam"; _stRam.BorderSides = ToolStripStatusLabelBorderSides.Right; _stRam.Text = "ОЗП: —";
-        _stVideo.Name = "_stVideo"; _stVideo.BorderSides = ToolStripStatusLabelBorderSides.Right; _stVideo.Text = "Відео: —";
-        _stCassette.Name = "_stCassette"; _stCassette.BorderSides = ToolStripStatusLabelBorderSides.Right; _stCassette.Text = "Стрічка: —";
-        _stCpu.Name = "_stCpu"; _stCpu.BorderSides = ToolStripStatusLabelBorderSides.Right; _stCpu.Font = new Font("Consolas", 8F); _stCpu.Text = "----:----";
-        _stSpring.Name = "_stSpring"; _stSpring.Spring = true;
-        _stFreq.Name = "_stFreq"; _stFreq.BorderSides = ToolStripStatusLabelBorderSides.Left; _stFreq.ForeColor = Color.Khaki; _stFreq.Text = "5 МГц";
-        _stState.Name = "_stState"; _stState.BorderSides = ToolStripStatusLabelBorderSides.Left; _stState.Text = "";
-        //
+        // 
+        // _stMachine
+        // 
+        _stMachine.BorderSides = ToolStripStatusLabelBorderSides.Right;
+        _stMachine.Name = "_stMachine";
+        _stMachine.Size = new Size(34, 29);
+        _stMachine.Text = "—";
+        // 
+        // _stRam
+        // 
+        _stRam.BorderSides = ToolStripStatusLabelBorderSides.Right;
+        _stRam.Name = "_stRam";
+        _stRam.Size = new Size(80, 29);
+        _stRam.Text = "ОЗП: —";
+        // 
+        // _stVideo
+        // 
+        _stVideo.BorderSides = ToolStripStatusLabelBorderSides.Right;
+        _stVideo.Name = "_stVideo";
+        _stVideo.Size = new Size(87, 29);
+        _stVideo.Text = "Відео: —";
+        // 
+        // _stCassette
+        // 
+        _stCassette.BorderSides = ToolStripStatusLabelBorderSides.Right;
+        _stCassette.Name = "_stCassette";
+        _stCassette.Size = new Size(104, 29);
+        _stCassette.Text = "Стрічка: —";
+        // 
+        // _stCpu
+        // 
+        _stCpu.BorderSides = ToolStripStatusLabelBorderSides.Right;
+        _stCpu.Font = new Font("Consolas", 8F);
+        _stCpu.Name = "_stCpu";
+        _stCpu.Size = new Size(94, 29);
+        _stCpu.Text = "----:----";
+        // 
+        // _stSpring
+        // 
+        _stSpring.Name = "_stSpring";
+        _stSpring.Size = new Size(516, 29);
+        _stSpring.Spring = true;
+        // 
+        // _stFreq
+        // 
+        _stFreq.BorderSides = ToolStripStatusLabelBorderSides.Left;
+        _stFreq.ForeColor = Color.Khaki;
+        _stFreq.Name = "_stFreq";
+        _stFreq.Size = new Size(66, 29);
+        _stFreq.Text = "5 МГц";
+        // 
+        // _stState
+        // 
+        _stState.BorderSides = ToolStripStatusLabelBorderSides.Left;
+        _stState.Name = "_stState";
+        _stState.Size = new Size(4, 29);
+        // 
         // MainForm
-        //
+        // 
         AutoScaleDimensions = new SizeF(10F, 25F);
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.Black;
-        ClientSize = new Size(640, 584);
+        ClientSize = new Size(1000, 990);
         Controls.Add(_screenPanel);
         Controls.Add(_log);
         Controls.Add(_menu);
@@ -118,6 +168,8 @@ partial class MainForm
         Text = "Поиск-1 (емулятор)";
         _screenPanel.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)_screen).EndInit();
+        _status.ResumeLayout(false);
+        _status.PerformLayout();
         ResumeLayout(false);
         PerformLayout();
     }
